@@ -29,7 +29,7 @@ function response_processor {
 	local divider=$1
 	local identifier=
 	local is_new_response=0
-	while IFS= read line
+	while IFS= read -r line
 	do 
 		if [[ "$line" == "$divider" ]]
 		then
@@ -63,6 +63,7 @@ function connection_process {
 	# make connection to ssh
 	(while cat < git_over_ssh.w; do :; done) | \
 		/bin/ssh -i "${id_rsa}" "${connection_str}" | \
+			# (while tee -a "response.log"; do :; done) | \
 			(response_processor $1)
 };
 
